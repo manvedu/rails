@@ -1,7 +1,9 @@
 require "cases/helper"
+require 'models/topic'
 
 module ActiveRecord
   class ResultTest < ActiveRecord::TestCase
+    fixtures :topics
     def result
       Result.new(['col_1', 'col_2'], [
         ['row 1 col 1', 'row 1 col 2'],
@@ -26,6 +28,25 @@ module ActiveRecord
       result.each do |row|
         assert_equal ['col_1', 'col_2'], row.keys
       end
+    end
+
+    test "returns first record" do
+      #assert_equal( Model.last, last_register, "It's not the lastrecord")
+      t = Topic.create!(title: "The first topic", written_on: Time.now, author_name: "The first author")
+      u = Topic.create!(title: "The second topic", written_on: Time.now, author_name: "The second author")
+      v = Topic.create!(title: "The third topic", written_on: Time.now, author_name: "The third author")
+      w = Topic.create!(title: "The last topic", written_on: Time.now, author_name: "The last author")
+      assert_equal( t, Topic.first, "It's not the first record")
+    end
+
+    test "returns last record" do
+      #sospechoso este pasa ammm
+      #assert_equal( Model.last, last_register, "It's not the lastrecord")
+      t = Topic.create!(title: "The first topic", written_on: Time.now, author_name: "The first author")
+      u = Topic.create!(title: "The second topic", written_on: Time.now, author_name: "The second author")
+      v = Topic.create!(title: "The third topic", written_on: Time.now, author_name: "The third author")
+      w = Topic.create!(title: "The last topic", written_on: Time.now, author_name: "The last author")
+      assert_equal( w, Topic.last, "It's not the last record")
     end
 
     test "each without block returns an enumerator" do
